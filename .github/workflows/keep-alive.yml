@@ -1,0 +1,21 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    # Runs every day at 09:00 UTC (~2:30 PM IST)
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping-websites:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Cluster University Resource Hub
+        run: |
+          curl -I https://cluster-university-resource-hub.netlify.app/ || true
+
+      - name: Ping Exam Result Portal
+        run: |
+          curl -I https://exam-result-portal.netlify.app/ || true
+
