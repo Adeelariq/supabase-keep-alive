@@ -13,9 +13,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL_1 }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_1 }}
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "$SUPABASE_URL/rest/v1/admin_users?select=*" \
+          curl -i \
+            "$SUPABASE_URL/rest/v1/keep_alive?select=id" \
             -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY")
-
-          echo "Status: $STATUS"
+            -H "Authorization: Bearer $SUPABASE_KEY"
