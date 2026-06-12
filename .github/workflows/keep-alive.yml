@@ -1,3 +1,11 @@
+- name: Check secrets loaded
+  env:
+    URL: ${{ secrets.SUPABASE_URL_1 }}
+    KEY: ${{ secrets.SUPABASE_KEY_1 }}
+  run: |
+    echo "URL length: ${#URL}"
+    echo "KEY length: ${#KEY}"
+    
 name: Keep Supabase Alive
 
 on:
