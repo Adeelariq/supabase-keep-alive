@@ -1,21 +1,23 @@
-name: Keep Supabase Alive
+name: Test Supabase
 
 on:
-  workflow_dispatch:
+workflow_dispatch:
 
 jobs:
-  ping-supabase:
-    runs-on: ubuntu-latest
+test:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Debug Project 1
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL_1 }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_1 }}
-        run: |
-          echo "URL length: ${#SUPABASE_URL}"
-          echo "KEY length: ${#SUPABASE_KEY}"
+```
+steps:
+  - name: Test Project 1
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL_1 }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_1 }}
+    run: |
+      STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+        "$SUPABASE_URL/rest/v1/admin_users?select=*" \
+        -H "apikey: $SUPABASE_KEY" \
+        -H "Authorization: Bearer $SUPABASE_KEY")
 
-          curl -i "$SUPABASE_URL/rest/v1/keep_alive?select=id" \
-            -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY"
+      echo "Status: $STATUS"
+```
