@@ -1,16 +1,8 @@
-- name: Check secrets loaded
-  env:
-    URL: ${{ secrets.SUPABASE_URL_1 }}
-    KEY: ${{ secrets.SUPABASE_KEY_1 }}
-  run: |
-    echo "URL length: ${#URL}"
-    echo "KEY length: ${#KEY}"
-    
 name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: "0 9 * * *"  # 09:00 UTC = 2:30 PM IST
+    - cron: "0 9 * * *" # 09:00 UTC = 2:30 PM IST
   workflow_dispatch:
 
 permissions:
@@ -21,6 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check secrets loaded
+        env:
+          URL: ${{ secrets.SUPABASE_URL_1 }}
+          KEY: ${{ secrets.SUPABASE_KEY_1 }}
+        run: |
+          echo "URL length: ${#URL}"
+          echo "KEY length: ${#KEY}"
 
       - name: Ping Project 1
         env:
