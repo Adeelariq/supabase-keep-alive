@@ -1,102 +1,21 @@
 name: Keep Supabase Alive
 
 on:
-  schedule:
-    - cron: "0 9 * * *" # 09:00 UTC = 2:30 PM IST
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   ping-supabase:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check secrets loaded
-        env:
-          URL: ${{ secrets.SUPABASE_URL_1 }}
-          KEY: ${{ secrets.SUPABASE_KEY_1 }}
-        run: |
-          echo "URL length: ${#URL}"
-          echo "KEY length: ${#KEY}"
-
-      - name: Ping Project 1
+      - name: Debug Project 1
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL_1 }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_1 }}
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "$SUPABASE_URL/rest/v1/keep_alive?select=id" \
+          echo "URL length: ${#SUPABASE_URL}"
+          echo "KEY length: ${#SUPABASE_KEY}"
+
+          curl -i "$SUPABASE_URL/rest/v1/keep_alive?select=id" \
             -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY")
-          echo "Project 1 → Status: $STATUS"
-          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 300 ]; then
-            echo "✅ Project 1 is alive!"
-          else
-            echo "❌ Project 1 ping failed with status $STATUS"
-            exit 1
-          fi
-
-      - name: Ping Project 2
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL_2 }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_2 }}
-        run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "$SUPABASE_URL/rest/v1/?select=1" \
-            -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY")
-          echo "Project 2 → Status: $STATUS"
-          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 300 ]; then
-            echo "✅ Project 2 is alive!"
-          else
-            echo "❌ Project 2 ping failed with status $STATUS"
-            exit 1
-          fi
-
-      - name: Ping Project 3
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL_3 }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_3 }}
-        run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "$SUPABASE_URL/rest/v1/?select=1" \
-            -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY")
-          echo "Project 3 → Status: $STATUS"
-          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 300 ]; then
-            echo "✅ Project 3 is alive!"
-          else
-            echo "❌ Project 3 ping failed with status $STATUS"
-            exit 1
-          fi
-
-      - name: Ping Project 4
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL_4 }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_4 }}
-        run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "$SUPABASE_URL/rest/v1/?select=1" \
-            -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY")
-          echo "Project 4 → Status: $STATUS"
-          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 300 ]; then
-            echo "✅ Project 4 is alive!"
-          else
-            echo "❌ Project 4 ping failed with status $STATUS"
-            exit 1
-          fi
-
-      - name: Checkout repo
-        uses: actions/checkout@v5
-
-      - name: Commit timestamp to keep repo active
-        run: |
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-          echo "Last ping: $(date -u)" > last-ping.txt
-          git add last-ping.txt
-          git diff --staged --quiet || git commit -m "chore: keep-alive ping $(date -u +'%Y-%m-%d')"
-          git push origin HEAD:main
+            -H "Authorization: Bearer $SUPABASE_KEY"
