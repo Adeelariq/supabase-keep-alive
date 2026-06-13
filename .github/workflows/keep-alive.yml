@@ -1,4 +1,4 @@
-name: Test Project 3
+name: Test Project 4
 
 on:
   workflow_dispatch:
@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test Project 3
+      - name: Test Project 4
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL_3 }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_3 }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL_4 }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_4 }}
         run: |
           curl -i \
             "$SUPABASE_URL/rest/v1/products?select=*" \
