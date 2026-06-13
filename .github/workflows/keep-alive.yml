@@ -1,4 +1,4 @@
-name: Test Supabase
+name: Test Project 2
 
 on:
   workflow_dispatch:
@@ -8,12 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test Project 1
+      - name: Test Project 2
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL_1 }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_1 }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL_2 }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY_2 }}
         run: |
           curl -i \
-            "$SUPABASE_URL/rest/v1/admin_users?select=id" \
+            "$SUPABASE_URL/rest/v1/users?select=*" \
             -H "apikey: $SUPABASE_KEY" \
             -H "Authorization: Bearer $SUPABASE_KEY"
